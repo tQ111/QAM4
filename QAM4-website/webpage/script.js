@@ -1,4 +1,6 @@
-let data;
+let menuData = [];
+let nutritionData = [];
+let activeCategory = "All";
 
 async function init() {
     let link = "https://studious-potato-jj7j4q4wpr5q2j745-8501.app.github.dev";
@@ -6,11 +8,21 @@ async function init() {
 
     let menuInfo = await fetch(link + route);
     menuData = await menuInfo.json();
- 
+
     let nutritionRes = await fetch(link + "/nutrition");
     nutritionData = await nutritionRes.json();
- 
+
     generateCards(menuData);
+}
+
+function getNutrition(name){
+    let result = [];
+    for(let i = 0; i < nutritionData.length; i++){
+        if(nutritionData[i].itemName == name){
+            result[result.length] = nutritionData[i];
+        }
+    }
+    return result;
 }
 
 function generateCards(items){
@@ -57,20 +69,21 @@ function toggleCard(card){
 }
 
 function filterCards(){
-    let search = document.getElementById("searchBox").value;
+    let search = document.getElementById("searchBox").value.toLowerCase();
     let filtered = [];
 
     for(let i = 0; i < menuData.length; i++){
         let item = menuData[i];
-        let nameMatch = item.itemName.indexOf(search) !== -1;
+        let nameMatch = item.itemName.toLowerCase().indexOf(search) !== -1;
         let categoryMatch = activeCategory == "All" || item.categoryName == activeCategory;
         if(nameMatch && categoryMatch){
-            filtered.push(item);
+            filtered[filtered.length] = item;
         }
     }
 
     generateCards(filtered);
 }
+
 
 function filterByCategory(category, btn){
     activeCategory = category;
@@ -81,4 +94,3 @@ function filterByCategory(category, btn){
     btn.className = "filterBtn active";
     filterCards();
 }
-
