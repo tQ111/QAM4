@@ -42,7 +42,7 @@ class Main {
     String sql2 = "select menuItems.itemName, nutrients.calories, nutrients.\"protein(g)\", nutrients.\"carbs(g)\", nutrients.\"fat(g)\" from menuItems join nutrients on menuItems.nutrientID = nutrients.nutrientID";
     server.createContext("/nutrition", new RouteHandler(db, sql2));
 
-    server.createContext("/", new RouteHandler("You are connected, but route not given or incorrect...."));
+    server.createContext("/", new RouteHandler("Connected, open Live Server"));
 
   
   
